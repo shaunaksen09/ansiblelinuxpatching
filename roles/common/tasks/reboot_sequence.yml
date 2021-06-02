@@ -1,0 +1,40 @@
+---
+- name: reboot sequence
+  debug: msg='Trigger machine reboot sequence'
+  changed_when: true
+  notify:
+    - reboot system
+    - wait for server to shutdown
+    - wait for server to restart
+    - pause for further boot actions
+  become: false
+
+- name: reboot system
+  shell: "sleep 2 && shudown -r now 'Ansible Playbook triggered'"
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: wait for server to shutdown
+  wait_for:
+    host: "{{ inventory_hostname }}"
+    state: stopped
+    delay: 1
+    timeout: 600
+    port: 22
+  delegate_to: localhost
+
+
+- name: wait for server to restart
+  wait_for:
+    host: "{{ inventory_hostname }}"
+    state: started
+    delay: 10
+    timeout: 1800
+    port: 22
+  delegate_to: localhost
+
+
+- name: pause for further boot actions
+  pause: seconds="5"
+  become: false

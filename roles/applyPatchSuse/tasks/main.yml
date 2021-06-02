@@ -1,0 +1,10 @@
+---
+# tasks file for applyPatchSuse
+- name: Install packages on Suse Machines
+
+  command: "{{ item }}"
+  with_items:
+    - zypper patch -y
+    - zypper patch -y
+  async: 12000
+  poll: 20

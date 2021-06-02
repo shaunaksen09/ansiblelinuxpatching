@@ -1,0 +1,447 @@
+### Filesystem and space related information
+
+- name: Print filesystem and space related information
+  shell: df -h
+  register: df_out
+
+- name: Set varible to check if value exists
+  set_fact:
+    df_info: "{{ df_out.stdout }}"
+  when: "df_out.rc == 0"
+
+- name: Set variable to check if value does not exist
+  set_fact:
+    df_info: "NA"
+  when: "not df_out.rc == 0"
+
+- name: Create a file with filesystem information
+  copy:
+    content: "{{ df_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/df_info.txt"
+  delegate_to: localhost
+
+- name: Adding df -h title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/df_info.txt"
+    line: '.......................Space along with filesystem info: df -h...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### /etc/fstab related information
+
+- name: Print filesystems
+  shell: cat /etc/fstab
+  register: fstab_out
+
+- name: Set route info variable to check if command value exists
+  set_fact:
+    fstab_info: "{{ fstab_out }}"
+  when: "fstab_out.rc == 0"
+
+- name: Set route  info variable to check if command does not exist
+  set_fact:
+    fstab_info: "NA"
+  when: "not fstab_out.rc == 0"
+
+- name: Create a file with /etc/fstab information
+  copy:
+    content: "{{ fstab_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/fstab_info.txt"
+  delegate_to: localhost
+
+- name: Adding /etc/fstab title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/fstab_info.txt"
+    line: '....................FileSystem Information: cat /etc/fstab.................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### pvs related information
+
+- name: Print pvs information
+  shell: pvs
+  register: pvs_out
+
+- name: Set pvs variable to check if command value exists
+  set_fact:
+    pvs_info: "{{ pvs_out.stdout }}"
+  when: "pvs_out.rc == 0"
+
+- name: Set pvs variable to check if command value does not exist
+  set_fact:
+    pvs_info: "NA"
+  when: "not pvs_out.rc == 0"
+
+- name: Create a file with pvs related information
+  copy:
+    content: "{{ pvs_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvs_info.txt"
+  delegate_to: localhost
+
+- name: Adding pvs title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvs_info.txt"
+    line: '.............................Physical volume info: pvs.......................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### lvs related information
+
+- name: Print lvs information
+  shell: lvs
+  register: lvs_out
+
+- name: Set lvs variable to check if command value exists
+  set_fact:
+    lvs_info: "{{ lvs_out.stdout }}"
+  when: "lvs_out.rc == 0"
+
+- name: Set lvs variable to check if command value does not exist
+  set_fact:
+    lvs_info: "NA"
+  when: "not lvs_out.rc == 0"
+
+- name: Create a file with lvs information
+  copy:
+    content: "{{ lvs_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvs_info.txt"
+  delegate_to: localhost
+
+- name: Adding lvs title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvs_info.txt"
+    line: '.............................Logical Volume Information: lvs.....................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+
+### vgs related information
+
+- name: Print vgs information
+  shell: vgs
+  register: vgs_out
+
+- name: Set vgs variable to check if command value exists
+  set_fact:
+    vgs_info: "{{ vgs_out.stdout }}"
+  when: "vgs_out.rc == 0"
+
+- name: Set lvs variable to check if command value does not exist
+  set_fact:
+    lvs_info: "NA"
+  when: "not lvs_out.rc == 0"
+
+- name: Create a file with vgs information
+  copy:
+    content: "{{ lvs_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgs_info.txt"
+  delegate_to: localhost
+
+- name: Adding title vgs to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgs_info.txt"
+    line: '.........................Volume Group Information: vgs .......................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+## Pv display information
+
+- name: Print pvdisplay information
+  shell: pvdisplay
+  register: pvdisplay_out
+
+- name: Set pvdisplay variable to check if command value exists
+  set_fact:
+    pvdisplay_info: "{{ pvdisplay_out.stdout }}"
+  when: "pvdisplay_out.rc == 0"
+
+- name: Set pvdisplay variable to check if command value does not exist
+  set_fact:
+    pvdisplay_info: "NA"
+  when: "not pvdisplay_out.rc == 0"
+
+- name: Create a file with pvdisplay related information
+  copy:
+    content: "{{ pvdisplay_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvdisplay_info.txt"
+  delegate_to: localhost
+
+
+- name: Adding pvdisplay title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvdisplay_info.txt"
+    line: '......................pvdisplay Information: pvdisplay...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### lvdisplay related information
+
+- name: Print lvdisplay information
+  shell: lvdisplay
+  register: lvdisplay_out
+
+- name: Set lvdisplay variable to check if command value exists
+  set_fact:
+    lvdisplay_info: "{{ lvdisplay_out.stdout }}"
+  when: "lvdisplay_out.rc == 0"
+
+- name: Set lvdisplay variable to check if command value does not exist
+  set_fact:
+    lvdisplay_info: "NA"
+  when: "not lvdisplay_out.rc == 0"
+
+- name: Create a file with lvdisplay information
+  copy:
+    content: "{{ lvdisplay_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvdisplay_info.txt"
+  delegate_to: localhost
+
+
+- name: Adding lvdisplay title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvdisplay_info.txt"
+    line: '......................Lvdisplay information: lvdisplay...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### vgdisplay related information
+
+- name: Print vgdisplay information
+  shell: vgdisplay
+  register: vgdisplay_out
+
+- name: Set vgdisplay variable to check if command value exists
+  set_fact:
+    vgdisplay_info: "{{ vgdisplay_out.stdout }}"
+  when: "vgdisplay_out.rc == 0"
+
+- name: Set vgdisplay variable to check if command value does not exist
+  set_fact:
+    vgdisplay_info: "NA"
+  when: "not vgdisplay_out.rc == 0"
+
+- name: Create a file with vgdisplay information
+  copy:
+    content: "{{ vgdisplay_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgdisplay_info.txt"
+  delegate_to: localhost
+
+- name: Adding vgdisplay title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgdisplay_info.txt"
+    line: '......................Vgdisplay Information: vgdisplay...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+## lsblk related information
+
+- name: Print lsblk related information
+  shell: lsblk
+  register: lsblk_out
+
+- name: Set variable to check if value exists
+  set_fact:
+    lsblk_info: "{{ lsblk_out.stdout }}"
+  when: "lsblk_out.rc == 0"
+
+- name: Set variable to check if value does not exist
+  set_fact:
+    lsblk_info: "NA"
+  when: "not lsblk_out.rc == 0"
+
+- name: Create a file with lsblk information
+  copy:
+    content: "{{ lsblk_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsblk_info.txt"
+  delegate_to: localhost
+
+
+- name: Adding lsblk title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsblk_info.txt"
+    line: '.....................lsblk Information: lsblk...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### blkid related information
+
+- name: Print blkid related information
+  shell: blkid
+  register: blkid_out
+
+- name: Set blkid info variable to check if command value exists
+  set_fact:
+    blkid_info: "{{ blkid_out.stdout }}"
+  when: "blkid_out.rc == 0"
+
+- name: Set blkid info variable to check if command does not exist
+  set_fact:
+    blkid_info: "NA"
+  when: "not blkid_out.rc == 0"
+
+- name: Create a file with blkid information
+  copy:
+    content: "{{ blkid_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/blkid_info.txt"
+  delegate_to: localhost
+
+
+- name: Adding blkid title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/blkid_info.txt"
+    line: '.....................blkid Information: blkid...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### fdisk related info
+
+- name: Get /sbin/fdisk -l
+  stat:
+    path: /sbin/fdisk
+  register: sbinfdisk_stat
+
+- name: Print fdisk information
+  shell: /sbin/fdisk -l
+  register: sbinfdisk_out
+  when: sbinfdisk_stat.stat.exists
+
+- name: Set fdisk variable to check if command value exists
+  set_fact:
+    sbinfdisk_info: "{{ sbinfdisk_out.stdout }}"
+  when: sbinfdisk_stat.stat.exists
+
+- name: Set fdisk variable to check if command value does not exist
+  set_fact:
+    sbinfdisk_info: "NA"
+  when: not sbinfdisk_stat.stat.exists
+
+- name: Create a file with fdisk related information
+  copy:
+    content: "{{ sbinfdisk_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/sbinfdisk_info.txt"
+  when: sbinfdisk_stat.stat.exists
+  delegate_to: localhost
+
+- name: Adding sbinfdisk -l title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/sbinfdisk_info.txt"
+    line: '.....................sbinfdisk Information: /sbin/fdisk -l...................'
+    insertbefore: BOF
+  when: sbinfdisk_stat.stat.exists
+  delegate_to: localhost
+
+### Multipath related information
+
+- name: Print multipath info
+  shell: multipath -ll || test $? -eq 1
+  register: multipath_out
+
+- name: Set multipath variable to check if command value exists
+  set_fact:
+    multipath_info: "{{ multipath_out.stdout }}"
+  when: multipath_out.rc == 1
+
+- name: Set multipath variable to check if command value does not exist
+  set_fact:
+    multipath_info: "NA"
+  when: not multipath_out.rc == 1
+
+- name: Create a file with multipath information
+  copy:
+    content: "{{ multipath_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/multipath_info.txt"
+  delegate_to: localhost
+
+- name: Adding multipath title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/multipath_info.txt"
+    line: '.....................Multipath Information: multipath -ll...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### lvm related information
+
+- name: Print lvm info
+  shell: cat /etc/lvm/lvm.conf
+  register: lvm_out
+
+- name: Set lvm variable to check if command value exists
+  set_fact:
+    lvm_info: "{{ lvm_out.stdout }}"
+  when: "lvm_out.rc == 0"
+
+- name: Set lvs variable to check if command value does not exist
+  set_fact:
+    lvm_info: "NA"
+  when: "not lvm_out == 0"
+
+- name: Create a file with lvm information
+  copy:
+    content: "{{ lvm_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvm_info.txt"
+  delegate_to: localhost
+
+- name: Adding lvm.conf title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvm_info.txt"
+    line: '......................Lvm Information: cat /etc/lvm/lvm.conf...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### lssci related information
+
+- name: Print lssci info
+  shell: lsscsi
+  register: lsscsi_out
+
+- name: Set lsscsi variable to check if command value exists
+  set_fact:
+    lsscsi_info: "{{ lsscsi_out.stdout }}"
+  when: "lsscsi_out.rc == 0"
+
+- name: Set lsscsi variable to check if command value does not exist
+  set_fact:
+    lsscsi_info: "NA"
+  when: "not lsscsi_out.rc == 0"
+
+- name: Create a file with lsscsi related information
+  copy:
+    content: "{{ lsscsi_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsscsi_info.txt"
+  delegate_to: localhost
+
+- name: Adding lsscsi title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsscsi_info.txt"
+    line: '......................Lsscsi Information: lsscsi...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### Dmidecode related information
+
+- name: Print dmidecode information
+  shell: dmidecode
+  register: dmidecode_out
+
+- name: Set dmidecode variable to check if command value exists
+  set_fact:
+    dmidecode_info: "{{ dmidecode_out.stdout }}"
+  when: "dmidecode_out.rc == 0"
+
+- name: Set dmidecode variable to check if command value does not exist
+  set_fact:
+    dmidecode_info: "NA"
+  when: "not dmidecode_out.rc == 0"
+
+- name: Create a file with dmidecode information
+  copy:
+    content: "{{ dmidecode_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/dmidecode_info.txt"
+  delegate_to: localhost
+
+- name: Adding dmidecode title to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/dmidecode_info.txt"
+    line: '......................Dmidecode Information: dmidecode...................'
+    insertbefore: BOF
+  delegate_to: localhost

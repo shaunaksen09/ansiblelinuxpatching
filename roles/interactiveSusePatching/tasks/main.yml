@@ -1,0 +1,16 @@
+---
+# tasks file for interactiveSusePatching
+- name: Getting the InteractivePatchDetails
+
+  shell: zypper list-patches | tail -6 | head -1 | cut -d "|" -f 2
+  register: patchNametoInstall
+
+- name: Check the patchname
+  debug:
+    var: patchNametoInstall
+
+- name: Running the command for InteractivePatchInstallation
+
+  shell: zypper in -t patch -y {{ patchNametoInstall.stdout }}
+  async: 12000
+  poll: 20

@@ -1,0 +1,7 @@
+---
+- name: Single source of information for all files
+  assemble:
+    src: "{{ filedirPrePatch }}/{{ ansible_hostname }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}.PreCheckInfo.txt"
+    delimiter: '--------------------------------------------------------------------------------'
+  delegate_to: localhost

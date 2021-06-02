@@ -1,0 +1,18 @@
+---
+- name: clear sssd cache sequence
+  find: paths="/var/lib/sss" file_type="directory" patterns="db,mc"
+  register: find_results
+  changed_when: find_results.matched|int == 2
+  notify:
+    - stop sssd
+    - delete sssd cache
+    - start sssd
+
+- name: stop sssd
+  service: name="sssd" state="stopped"
+
+- name: delete sssd cache
+  shell: "rm -f /var/lib/sss/{db,mc}/*"
+
+- name: start sssd
+  service: name="sssd" state="started"

@@ -1,0 +1,9 @@
+---
+#file: groupvars/all
+user: ansible
+groupinfo: ansible
+home: /home/ansible
+ansiblePatchingFolderLocation: /home/ansible/ansible-patching/os-patching-linux
+filedirPrePatch: /home/ansible/ansible-patching/os-patching-linux/PrePatching
+filedirPostPatch: /home/ansible/ansible-patching/os-patching-linux/PostPatching
+filedirDiff: /home/ansible/ansible-patching/os-patching-linux/DifferencePrePost

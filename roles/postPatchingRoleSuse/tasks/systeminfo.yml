@@ -1,0 +1,67 @@
+### Directory Creation
+
+- name: Create a directory for the inventory
+  file:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}"
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+
+### Uname Information
+
+- name: Print uname information
+  shell: uname -a
+  register: uname_out
+
+- name: Set uname variable to check if command value exists
+  set_fact:
+    uname_info: "{{ uname_out.stdout }}"
+  when: "uname_out.rc == 0"
+
+- name: Set uname variable to check if command value does not exist
+  set_fact:
+    uname_info: "NA"
+  when: "not uname_out.rc == 0"
+  
+- name: Create a file with uname information
+  copy:
+    content: "{{ uname_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/uname_info.txt"
+  delegate_to: localhost
+
+- name: Adding uname info to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/uname_info.txt"
+    line: '.................Uname file  Information: uname -a ...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+
+### Release Information
+
+- name: Print SuseRelease info
+  shell: cat /etc/os-release | egrep -i 'version_id'
+  register: release_out
+
+- name: Set suserelease info variable to check if command value exists
+  set_fact:
+    release_info: "{{ release_out.stdout }}"
+  when: "release_out.rc == 0"
+
+- name: Set suserelease info variable to check if command does not exist
+  set_fact:
+    release_info: "NA"
+  when: "not release_out.rc == 0"
+
+- name: Create a file with SuseRelease information
+  copy:
+    content: "{{ release_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/release_info.txt"
+  delegate_to: localhost
+
+- name: Adding release info to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/release_info.txt"
+    line: '.................Release file  Information: /etc/os-release ...........................'
+    insertbefore: BOF
+  delegate_to: localhost

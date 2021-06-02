@@ -1,0 +1,4 @@
+---
+# handlers file for common
+- import_tasks: reboot_sequence.yml
+- import_tasks: sssd_cache.yml

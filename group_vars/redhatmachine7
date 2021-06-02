@@ -1,0 +1,5 @@
+---
+#file: groupvars/all
+user: ansible
+home: /home/ansible
+ansiblePatchingFolderLocation: /home/ansible/ansible-patching/

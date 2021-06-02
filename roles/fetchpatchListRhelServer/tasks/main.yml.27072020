@@ -1,0 +1,37 @@
+---
+# tasks file for rhelServer ManagedHost
+#
+- name: Download Patches on ManagedHost Rhel
+  shell:
+    cmd: 'yum check-update || test $? -eq 100'
+  register: patchList
+
+- name: Check command execution
+  debug:
+    var: patchList
+
+- name: Save the PatchList in Control Node
+  lineinfile:
+    path: "{{ ansiblePatchingFolderLocation }}/roles/fetchpatchListRhelServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt"
+    line: "{{ patchList.stdout_lines }}"
+    owner: ansible
+    group: ansible
+    mode: 0644
+    create: yes
+  delegate_to: localhost
+
+- name: Format the patchList
+  command: python format.py {{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt
+  args:
+    chdir: "{{ ansiblePatchingFolderLocation }}/roles/fetchpatchListRhelServer/files"
+  delegate_to: 127.0.0.1
+  run_once: true
+  register: output
+
+- name: Check the formatted output
+  debug:
+    var: output.stdout_lines
+
+- name: Create a backup of patchlist
+  shell: mv {{ ansiblePatchingFolderLocation }}/roles/fetchpatchListRhelServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt {{ ansiblePatchingFolderLocation }}/roles/fetchpatchListRhelServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt.back
+  delegate_to: localhost

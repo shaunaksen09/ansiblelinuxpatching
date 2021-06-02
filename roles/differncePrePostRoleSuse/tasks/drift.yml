@@ -1,0 +1,768 @@
+---
+- name: Create a directory for the host
+  file:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}"
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+
+ ###################################################
+
+- name: Checking uname drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/uname_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/uname_info.txt"
+  register: unameDriftcheck
+  failed_when: "unameDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Uname difference file
+  copy:
+    content: "{{ unameDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/uname_diff.txt"
+  delegate_to: localhost
+
+- name: Uname info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/uname_diff.txt"
+    line: "......................printing Uname difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################
+
+- name: Checking releaseinfo drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/release_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/release_info.txt"
+  register: releaseDriftcheck
+  failed_when: "releaseDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: release difference file
+  copy:
+    content: "{{ releaseDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/release_diff.txt"
+  delegate_to: localhost
+
+- name: Release info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/release_diff.txt"
+    line: "......................printing Release difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##############################################################
+
+- name: Checking memory drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/mem_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/mem_info.txt"
+  register: memDriftcheck
+  failed_when: "memDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Memory difference file
+  copy:
+    content: "{{ memDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/mem_diff.txt"
+  delegate_to: localhost
+
+- name: Memory info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/mem_diff.txt"
+    line: "......................printing Memory difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+############################################################### 
+
+- name: Checking ProcInfo drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/proc_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/proc_info.txt"
+  register: procDriftcheck
+  failed_when: "procDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: procInfo difference file
+  copy:
+    content: "{{ procDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/proc_diff.txt"
+  delegate_to: localhost
+
+- name: Proc info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/proc_diff.txt"
+    line: "......................printing Proc difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+################################################################
+
+- name: Checking ifconfig drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifconfig_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/ifconfig_info.txt"
+  register: ifconfigDriftcheck
+  failed_when: "ifconfigDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Ifconfig difference file
+  copy:
+    content: "{{ ifconfigDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/ifconfig_diff.txt"
+  delegate_to: localhost
+
+- name: ifconfig info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/ifconfig_diff.txt"
+    line: "......................printing ifconfig difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##############################################################
+
+- name: Checking route drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/route_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/route_info.txt"
+  register: routeDriftcheck
+  failed_when: "routeDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Route difference file
+  copy:
+    content: "{{ routeDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/route_diff.txt"
+  delegate_to: localhost
+
+
+- name: Route difference
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/route_diff.txt"
+    line: "......................printing route difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+############################################################
+
+- name: Checking NetworkRoutes drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/networkroutes_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/networkroutes_info.txt"
+  register: networkRoutesDriftcheck
+  failed_when: "networkRoutesDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: NetworkRoutes difference file
+  copy:
+    content: "{{ networkRoutesDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/networkroute_diff.txt"
+  delegate_to: localhost
+
+
+- name: NetworkRoutes diff
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/networkroute_diff.txt"
+    line: "......................printing NetworkRoutes difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################  
+
+- name: Checking ipaddr drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/ipaddr_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/ipaddr_info.txt"
+  register: ipaddrDriftcheck
+  failed_when: "ipaddrDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: ipaddr difference file
+  copy:
+    content: "{{ ipaddrDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/ipaddr_diff.txt"
+  delegate_to: localhost
+
+
+- name: ipaddr diff
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/ipaddr_diff.txt"
+    line: "......................printing ipaddr difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking iproute drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/iproute_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/iproute_info.txt"
+  register: iprouteDriftcheck
+  failed_when: "iprouteDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Iproute difference file
+  copy:
+    content: "{{ iprouteDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/iproute_diff.txt"
+  delegate_to: localhost
+
+
+- name: iproute info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/iproute_diff.txt"
+    line: "......................printing iproute difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking routeip6 drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/routeip6_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/routeip6_info.txt"
+  register: routeIp6Driftcheck
+  failed_when: "routeIp6Driftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: routeIp6 difference file
+  copy:
+    content: "{{ routeIp6Driftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/routeip6_diff.txt"
+  delegate_to: localhost
+
+
+- name: routeip6 info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/routeip6_diff.txt"
+    line: "......................printing routeip6 difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking ifconfigeth0 drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifcfgeth0_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/ifcfgeth0_info.txt"
+  register: ifcfgeth0Driftcheck
+  failed_when: "ifcfgeth0Driftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: ifconfigEth0 difference file
+  copy:
+    content: "{{ ifcfgeth0Driftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/ifcfgeth0_diff.txt"
+  delegate_to: localhost
+
+
+- name: ifcfgeth0 info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/ifcfgeth0_diff.txt"
+    line: "......................printing ifconfiggeth0 difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################  
+
+- name: Checking ProcessInfo drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/process_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/process_info.txt"
+  register: processDriftcheck
+  failed_when: "processDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Process difference file
+  copy:
+    content: "{{ processDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/process_diff.txt"
+  delegate_to: localhost
+
+
+- name: process info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/process_diff.txt"
+    line: "......................printing processinfo difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+######################################################## 
+
+- name: Checking df_info drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/df_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/df_info.txt"
+  register: dfDriftcheck
+  failed_when: "dfDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Df -h difference file
+  copy:
+    content: "{{ dfDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/df_diff.txt"
+  delegate_to: localhost
+
+
+- name: df info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/df_diff.txt"
+    line: "......................printing df_info difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################
+
+- name: Checking fstab drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/fstab_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/fstab_info.txt"
+  register: fstabDriftcheck
+  failed_when: "fstabDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: fstab difference file
+  copy:
+    content: "{{ fstabDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/fstab_diff.txt"
+  delegate_to: localhost
+
+- name: fstab info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/fstab_diff.txt"
+    line: "......................printing fstab difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################
+
+- name: Checking grubinfo drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/grub_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/grub_info.txt"
+  register: grubDriftcheck
+  failed_when: "grubDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: grub difference file
+  copy:
+    content: "{{ grubDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/grub_diff.txt"
+  delegate_to: localhost
+
+- name: grub info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/grub_diff.txt"
+    line: "......................printing grub difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##############################################################
+
+- name: Checking kernel drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/kernel_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/kernel_info.txt"
+  register: kernelDriftcheck
+  failed_when: "kernelDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: kernel difference file
+  copy:
+    content: "{{ kernelDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/kernel_diff.txt"
+  delegate_to: localhost
+
+- name: Kernel info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/kernel_diff.txt"
+    line: "......................printing Kernel difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+############################################################### 
+
+- name: Checking sysctl drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/sysctl_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/sysctl_info.txt"
+  register: sysctlDriftcheck
+  failed_when: "sysctlDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: sysctlInfo difference file
+  copy:
+    content: "{{ sysctlDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/sysctl_diff.txt"
+  delegate_to: localhost
+
+- name: sysctl info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/sysctl_diff.txt"
+    line: "......................printing Sysctl difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+################################################################
+
+- name: Checking resolv drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/resolv_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/resolv_info.txt"
+  register: resolvDriftcheck
+  failed_when: "resolvDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: resolv difference file
+  copy:
+    content: "{{ resolvDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/resolv_diff.txt"
+  delegate_to: localhost
+
+- name: Resolv info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/resolv_diff.txt"
+    line: "......................printing resolv difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##############################################################
+
+- name: Checking hostfile drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/hostsfile_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/hostsfile_info.txt"
+  register: hostfileDriftcheck
+  failed_when: "hostfileDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Hostsfile difference file
+  copy:
+    content: "{{ hostfileDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/hostfile_diff.txt"
+  delegate_to: localhost
+
+- name: Hostsfile info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/hostfile_diff.txt"
+    line: "......................printing hostfile difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+############################################################
+
+- name: Checking pvs  drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvs_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/pvs_info.txt"
+  register: pvsDriftcheck
+  failed_when: "pvsDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: pvs difference file
+  copy:
+    content: "{{ pvsDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/pvs_diff.txt"
+  delegate_to: localhost
+
+
+- name: Pvs info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/pvs_diff.txt"
+    line: "......................printing Pvs difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################  
+
+- name: Checking lvs drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvs_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/lvs_info.txt"
+  register: lvsDriftcheck
+  failed_when: "lvsDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: lvs difference file
+  copy:
+    content: "{{ lvsDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/lvs_diff.txt"
+  delegate_to: localhost
+
+
+- name: Lvs info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/lvs_diff.txt"
+    line: "......................printing lvs difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking vgs drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgs_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/vgs_info.txt"
+  register: vgsDriftcheck
+  failed_when: "vgsDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Vgs difference file
+  copy:
+    content: "{{ vgsDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/vgs_diff.txt"
+  delegate_to: localhost
+
+
+- name: Vgs info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/vgs_diff.txt"
+    line: "......................printing vgs difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking pvdisplay drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/pvdisplay_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/pvdisplay_info.txt"
+  register: pvdisplayDriftcheck
+  failed_when: "pvdisplayDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: pvdisplay difference file
+  copy:
+    content: "{{ pvdisplayDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/pvdisplay_diff.txt"
+  delegate_to: localhost
+
+
+- name: Pvdisplay info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/pvdisplay_diff.txt"
+    line: "......................printing pvdisplay difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking lvdisplay drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvdisplay_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/lvdisplay_info.txt"
+  register: lvdisplayDriftcheck
+  failed_when: "lvdisplayDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: lvdisplay difference file
+  copy:
+    content: "{{ lvdisplayDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/lvdisplay_diff.txt"
+  delegate_to: localhost
+
+
+- name: lvdisplay info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/lvdisplay_diff.txt"
+    line: "......................printing lvdisplay difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################  
+
+- name: Checking Vgdisplay drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/vgdisplay_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/vgdisplay_info.txt"
+  register: vgdisplayDriftcheck
+  failed_when: "vgdisplayDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: Process difference file
+  copy:
+    content: "{{ vgdisplayDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/vgdisplay_diff.txt"
+  delegate_to: localhost
+
+
+- name: Vgdisplay info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/vgdisplay_diff.txt"
+    line: "......................printing vgdisplay difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+######################################################## 
+
+- name: Checking lsblk drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsblk_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/lsblk_info.txt"
+  register: lsblkDriftcheck
+  failed_when: "lsblkDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: lsblk difference file
+  copy:
+    content: "{{ lsblkDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/lsblk_diff.txt"
+  delegate_to: localhost
+
+
+- name: lsblk info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/lsblk_diff.txt"
+    line: "......................printing lsblk difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+########################################################
+
+
+
+- name: Checking blkid drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/blkid_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/blkid_info.txt"
+  register: blkidDriftcheck
+  failed_when: "blkidDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: blkid difference file
+  copy:
+    content: "{{ blkidDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/blkid_diff.txt"
+  delegate_to: localhost
+
+
+- name: blkid info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/blkid_diff.txt"
+    line: "......................printing blkid difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+############################################################
+
+- name: Checking sbinfdisk  drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/sbinfdisk_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/sbinfdisk_info.txt"
+  register: sbinfdiskDriftcheck
+  failed_when: "sbinfdiskDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: sbinfdisk difference file
+  copy:
+    content: "{{ sbinfdiskDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/sbinfdisk_diff.txt"
+  delegate_to: localhost
+
+
+- name: sbinfdisk info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/sbinfdisk_diff.txt"
+    line: "......................printing sbinfdisk difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################  
+
+- name: Checking multipath drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/multipath_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/multipath_info.txt"
+  register: multipathDriftcheck
+  failed_when: "multipathDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: multipath difference file
+  copy:
+    content: "{{ multipathDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/multipath_diff.txt"
+  delegate_to: localhost
+
+
+- name: multipath info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/multipath_diff.txt"
+    line: "......................printing multipath difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking Lvm drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/lvm_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/lvm_info.txt"
+  register: lvmDriftcheck
+  failed_when: "lvmDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: lvm difference file
+  copy:
+    content: "{{ lvmDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/lvm_diff.txt"
+  delegate_to: localhost
+
+
+- name: lvm info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/lvm_diff.txt"
+    line: "......................printing lvm difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking lsscsi drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/lsscsi_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/lsscsi_info.txt"
+  register: lsscsiDriftcheck
+  failed_when: "lsscsiDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: lsscsi difference file
+  copy:
+    content: "{{ lsscsiDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/lsscsi_diff.txt"
+  delegate_to: localhost
+
+
+- name: lsscsi info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/lsscsi_diff.txt"
+    line: "......................printing lsscsi difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+##########################################################
+
+- name: Checking dmidecode drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/dmidecode_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/dmidecode_info.txt"
+  register: dmidecodeDriftcheck
+  failed_when: "dmidecodeDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: dmidecode difference file
+  copy:
+    content: "{{ dmidecodeDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/dmidecode_diff.txt"
+  delegate_to: localhost
+
+
+- name: dmidecode info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/dmidecode_diff.txt"
+    line: "......................printing dmidecode difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+#########################################################  
+
+- name: Checking date drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/date_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/date_info.txt"
+  register: dateDriftcheck
+  failed_when: "dateDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: date difference file
+  copy:
+    content: "{{ dateDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/date_diff.txt"
+  delegate_to: localhost
+
+
+- name: date info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/date_diff.txt"
+    line: "......................printing date difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+######################################################## 
+
+- name: Checking localtime drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/localtime_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/localtime_info.txt"
+  register: localtimeDriftcheck
+  failed_when: "localtimeDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: localtime difference file
+  copy:
+    content: "{{ localtimeDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/localtime_diff.txt"
+  delegate_to: localhost
+
+
+- name: localtime info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/localtime_diff.txt"
+    line: "......................printing localtime difference......................."
+    insertbefore: BOF
+  delegate_to: localhost
+
+######################################################
+#
+- name: Checking timedatectl drift
+  command: diff "{{ filedirPrePatch }}/{{ ansible_hostname }}/timedatectl_info.txt" "{{ filedirPostPatch }}/{{ ansible_hostname }}/timedatectl_info.txt"
+  register: timedatectlDriftcheck
+  failed_when: "timedatectlDriftcheck.rc > 1"
+  delegate_to: localhost
+
+- name: timedatectl difference file
+  copy:
+    content: "{{ timedatectlDriftcheck.stdout }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}/timedatectl_diff.txt"
+  delegate_to: localhost
+
+
+- name: timedatectl info
+  lineinfile:
+    path: "{{ filedirDiff }}/{{ ansible_hostname }}/timedatectl_diff.txt"
+    line: "......................printing timedatectl difference......................."
+    insertbefore: BOF
+  delegate_to: localhost

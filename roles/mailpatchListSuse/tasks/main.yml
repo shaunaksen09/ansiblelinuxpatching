@@ -1,0 +1,11 @@
+---
+# tasks file for mailpatchListSuse
+
+- name: Sending email with patchList
+  mail:
+    host: 127.0.0.1
+    port: 25
+    to: "{{ mailRecipient }}"
+    subject: Suse Patch List extracted from SuseHost
+    body: Suse PatchList
+    attach: /home/ansible/ansible-patching/Suse/patchListSuse.csv

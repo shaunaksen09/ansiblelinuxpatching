@@ -1,0 +1,29 @@
+### Process Info
+
+- name: Process info
+  shell: ps -aef
+  register: process_out
+
+- name: setting the variable for process if output exists
+  set_fact:
+    process_info: "{{ process_out.stdout }}"
+  when: "process_out.rc == 0"
+
+- name: setting the variable for process if output does not exist
+  set_fact:
+    process_info: "NA"
+  when: "not process_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ process_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/process_info.txt"
+  delegate_to: localhost
+
+  
+- name: Add Process Information
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/process_info.txt"
+    line: '.................... Process Information: ps -aef.........................'
+    insertbefore: BOF
+  delegate_to: localhost

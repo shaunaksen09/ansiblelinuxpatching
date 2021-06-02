@@ -1,0 +1,12 @@
+---
+# tasks file for roles/SuseCheckList
+- name: PreRequisites for Suse
+
+  shell:
+        cmd: "{{ item }}"
+  async: 600
+  poll: 20
+  with_items:
+        - zypper ref -s
+        - zypper rr OSS
+        - zypper lr

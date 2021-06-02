@@ -1,0 +1,8 @@
+---
+# tasks file for prepatching
+- name: include Drift information
+  import_tasks: drift.yml
+
+- name: include Difference information in a single file
+  import_tasks: information_allDiff.yml
+

@@ -1,0 +1,13 @@
+---
+# tasks file for applyPatchRhel
+
+- name: Install packages on Red Hat Machines
+
+  yum:
+    name: '*'
+    state: latest
+    disable_gpg_check: yes
+  notify:
+    - reboot sequence
+    - clear sssd cache sequence
+

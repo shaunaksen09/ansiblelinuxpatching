@@ -1,0 +1,57 @@
+### Free memory
+
+- name: Free memory 
+  shell: free -h
+  register: mem_out
+
+- name: setting the variable for memory file config if output exists
+  set_fact:
+    memory_info: "{{ mem_out.stdout }}"
+  when: "mem_out.rc == 0"
+
+- name: setting the variable for memory file config if output does not exist
+  set_fact:
+    memory_info: "NA"
+  when: "not mem_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ mem_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/mem_info.txt"
+  delegate_to: localhost
+
+- name: adding free -h to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/mem_info.txt"
+    line: '.................Free memory  Information: free -h ...........................'
+    insertbefore: BOF
+  delegate_to: localhost  
+  
+### cat /proc/cpuinfo
+
+- name: Proc file
+  shell: "cat /proc/cpuinfo | egrep -i 'processor|name|MHz|cores'"
+  register: proc_out
+
+- name: setting the variable for proc file config if output exists
+  set_fact:
+    proc_info: "{{ proc_out.stdout }}"
+  when: "proc_out.rc == 0"
+
+- name: setting the variable for proc file config if output does not exist
+  set_fact:
+    proc_info: "NA"
+  when: "not proc_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ proc_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/proc_info.txt"
+  delegate_to: localhost
+
+- name: adding proc file to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/proc_info.txt"
+    line:  '.................Proc file Information: "/proc/cpuinfo.....................'
+    insertbefore: BOF
+  delegate_to: localhost  

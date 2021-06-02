@@ -1,0 +1,4 @@
+ SUSE-SLE-SERVER-12-SP4-2019-765                    
+ SUSE-SLE-Module-Public-Cloud-12-2019-1626          
+ SUSE-SLE-Module-Public-Cloud-12-2018-925           
+ SUSE-SLE-SERVER-12-SP4-2019-1623 

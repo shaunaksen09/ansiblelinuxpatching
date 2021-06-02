@@ -1,0 +1,88 @@
+### Date configuration
+
+- name: Date configuration
+  shell: date
+  register: date_out
+
+- name: setting the variable for date file config if output exists
+  set_fact:
+    date_info: "{{ date_out.stdout }}"
+  when: "date_out.rc == 0"
+
+- name: setting the variable for resolv file config if output does not exist
+  set_fact:
+    date_info: "NA"
+  when: "not date_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ date_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/date_info.txt"
+  delegate_to: localhost
+
+- name: Adding date to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/date_info.txt"
+    line: '......................Date Information: date...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+
+### Time configuration
+
+- name: Time configuration
+  shell: cat /etc/localtime
+  register: localtime_out
+
+- name: setting the variable for localtime file config if output exists
+  set_fact:
+    localtime_info: "{{ localtime_out.stdout }}"
+  when: "localtime_out.rc == 0"
+
+- name: setting the variable for localtime file config if output does not exist
+  set_fact:
+    localtime_info: "NA"
+  when: "not localtime_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ localtime_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/localtime_info.txt"
+  delegate_to: localhost
+
+- name: Adding time to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/localtime_info.txt"
+    line: '......................Time Information: /etc/localtime...................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### timedatectl 
+
+
+- name: Time configuration
+  shell: timedatectl
+  register: localtime1_out
+
+- name: setting the variable for timedatectl file config if output exists
+  set_fact:
+    timedatectl_info: "{{ localtime1_out.stdout }}"
+  when: "localtime1_out.rc == 0"
+
+- name: setting the variable for timedatectl file config if output does not exist
+  set_fact:
+    timedatectl_info: "NA"
+  when: "not localtime1_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ localtime1_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/timedatectl_info.txt"
+  delegate_to: localhost
+
+- name: Adding timedatactl to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/timedatectl_info.txt"
+    line: '......................Time Information: timedatectl...................'
+    insertbefore: BOF
+  delegate_to: localhost

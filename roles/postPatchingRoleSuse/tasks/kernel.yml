@@ -1,0 +1,124 @@
+## Grub information
+
+- name: Grub configuration
+  shell: cat /etc/grub.conf
+  register: grub_out
+
+- name: Set variable for grub info if information exists
+  set_fact:
+    grub_info: "{{ grub_out.stdout }}"
+  when: "grub_out.rc == 0"
+
+- name: Set variable for grub info if information does not exist
+  set_fact:
+    grub_info: "NA"
+  when: "not grub_out.rc == 0"
+
+- name: Save the grub info in a file
+  copy:
+    content: "{{ grub_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/grub_info.txt"
+  delegate_to: localhost
+
+- name: Adding /etc/grub.conf title to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/grub_info.txt"
+    line: '...............Grub Information: /etc/grub.conf................................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+## Boot Grub information
+
+- name: Grub menu configuration
+  stat: 
+    path: /boot/grub/menu.lst
+  register: grubmenu_stat
+
+- name: Print menu.lst
+  shell: cat /boot/grub/menu.lst
+  register: grubmenu_out
+  when: grubmenu_stat.stat.exists == True
+
+- name: Set variable for grub menu info if information exists
+  set_fact:
+    grubmenu_info: "{{ grubmenu_out.stdout }}"
+  when: grubmenu_stat.stat.exists == True
+
+- name: Set variable for grub menu info if information does not exist
+  set_fact:
+    grubmenu_info: "NA"
+  when: grubmenu_stat.stat.exists == False
+
+- name: Save the grub menu info in a file
+  copy:
+    content: "{{ grubmenu_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/grubmenu_info.txt"
+  when: grubmenu_stat.stat.exists == True
+  delegate_to: localhost
+
+- name: Adding /boot/grub/menu.lst title to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/grubmenu_info.txt"
+    line: '....................Contents of Grub Menu: /boot/grub/menu.lst.................'
+    insertbefore: BOF
+  when: grubmenu_stat.stat.exists == True
+  delegate_to: localhost  
+
+
+## Bootable kernel information
+
+- name: Kernel configuration
+  shell: uname -r
+  register: kernel_out
+
+- name: Set variable for kernel info if information exists
+  set_fact:
+    kernel_info: "{{ kernel_out.stdout }}"
+  when: "kernel_out.rc == 0"
+
+- name: Set variable for kernel info if information does not exist
+  set_fact:
+    kernel_info: "NA"
+  when: "not kernel_out.rc == 0"
+
+- name: Save the kernel info in a file
+  copy:
+    content: "{{ kernel_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/kernel_info.txt"
+  delegate_to: localhost
+
+- name: Adding uname -r title to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/kernel_info.txt"
+    line: '.................Bootable Kernel Information: uname -r ...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+## sysctl info
+
+- name: SysCtl configuration
+  shell: cat /etc/sysctl.conf
+  register: sysctl_out
+
+- name: Set variable for sysctl info if information exists
+  set_fact:
+    sysctl_info: "{{ sysctl_out.stdout }}"
+  when: "sysctl_out.rc == 0"
+
+- name: Set variable for sysctl info if information does not exist
+  set_fact:
+    sysctl_info: "NA"
+  when: "not sysctl_out.rc == 0"
+
+- name: Save the sysctl info in a file
+  copy:
+    content: "{{ sysctl_out.stdout }}"
+    dest: "{{ filedirPostPatch }}/{{ ansible_hostname }}/sysctl_info.txt"
+  delegate_to: localhost
+
+- name: Adding /etc/systctl.conf title to the file
+  lineinfile:
+    path: "{{ filedirPostPatch }}/{{ ansible_hostname }}/sysctl_info.txt"
+    line: '......................Sysctl conf information: /etc/sysctl.conf.....................'
+    insertbefore: BOF
+  delegate_to: localhost

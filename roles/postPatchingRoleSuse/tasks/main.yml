@@ -1,0 +1,29 @@
+---
+# tasks file for postpatching
+
+- name: include host information
+  import_tasks: systeminfo.yml
+
+- name: include cpumemory information
+  import_tasks: cpumem.yml
+
+- name: include network information
+  import_tasks: network.yml
+
+- name: include process information
+  import_tasks: process.yml
+
+- name: include kernel information
+  import_tasks: kernel.yml
+
+- name: include dns information
+  import_tasks: dns.yml
+
+- name: include filesystemvolume information
+  import_tasks: filesystem_volumeinfo.yml
+
+- name: include timedate information
+  import_tasks: timedate.yml
+
+- name: include all information after patching
+  import_tasks: information_all.yml

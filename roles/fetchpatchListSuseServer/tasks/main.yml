@@ -1,0 +1,37 @@
+---
+# tasks file for rhelServer ManagedHost
+#
+- name: Download Patches on ManagedHost Suse
+  shell:
+    cmd: zypper list-patches
+  register: patchList
+
+- name: check the command output for getting the patch list for Suse
+  debug:
+    var: patchList
+
+- name: Save the PatchList in Control Node
+  lineinfile:
+    path: "{{ ansiblePatchingFolderLocation }}/roles/fetchpatchListSuseServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt"
+    line: "{{ patchList.stdout_lines }}"
+    owner: "{{ user }}"
+    group: "{{ groupinfo }}"
+    mode: 0644
+    create: yes
+  delegate_to: localhost
+
+- name: Format the PatchList
+  command: python format.py {{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt
+  args:
+    chdir: "{{ ansiblePatchingFolderLocation }}/roles/fetchpatchListSuseServer/files"
+  delegate_to: 127.0.0.1
+  run_once: true
+  register: output
+
+- name: check the formatted output
+  debug:
+    var: output.stdout_lines
+
+- name: Create a backup of patchlist
+  shell: mv {{ ansiblePatchingFolderLocation }}/roles/fetchpatchListSuseServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt {{ ansiblePatchingFolderLocation }}/roles/fetchpatchListSuseServer/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt.back
+  delegate_to: localhost

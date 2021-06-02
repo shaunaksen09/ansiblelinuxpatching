@@ -1,0 +1,236 @@
+### Ifconfig information
+
+- name: Print ifconfig information
+  shell: ifconfig -a | grep inet | head -1 | awk -F ' ' '{print $2}'
+  register: ifconfig_out
+
+- name: Set ifconfig variable to check if command value exists
+  set_fact:
+    ifconfig_info: "{{ ifconfig_out.stdout }}"
+  when: "ifconfig_out.rc == 0"
+
+- name: Set ifconfig variable to check if command value does not exist
+  set_fact:
+    ifconfig_info: "NA"
+  when: "not ifconfig_out.rc == 0"
+
+- name: Create a file with ifconfig information
+  copy:
+    content: "{{ ifconfig_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifconfig_info.txt"
+  delegate_to: localhost
+
+- name: Adding ifconfig information to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifconfig_info.txt"
+    line: '.................Print ifconfig information : ifconfig -a'
+    insertbefore: BOF
+  delegate_to: localhost
+### Route information
+
+- name: Print route info
+  shell: route -n
+  register: route_out
+
+- name: Set route info variable to check if command value exists
+  set_fact:
+    route_info: "{{ route_out.stdout }}"
+  when: "route_out.rc == 0"
+
+- name: Set route  info variable to check if command does not exist
+  set_fact:
+    route_info: "NA"
+  when: "not route_out.rc == 0"
+
+- name: Create a file with route information
+  copy:
+    content: "{{ route_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/route_info.txt"
+  delegate_to: localhost
+
+- name: Adding route info to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/route_info.txt"
+    line: '.................Print route information : route -n...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### /etc/sysconfig/network/routes
+
+- name: Print networkroutes information
+  shell: cat /etc/sysconfig/network/routes
+  register: networkroutes_out
+
+- name: Set networkroutes variable to check if command value exists
+  set_fact:
+    networkroutes_info: "{{ networkroutes_out.stdout }}"
+  when: "networkroutes_out.rc == 0"
+
+- name: Set networkroutes variable to check if command value does not exist
+  set_fact:
+    networkroutes_info: "NA"
+  when: "not networkroutes_out.rc == 0"
+
+- name: Create a file with networkroutes information
+  copy:
+    content: "{{ networkroutes_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/networkroutes_info.txt"
+  delegate_to: localhost
+
+- name: Adding networkroutes information to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/networkroutes_info.txt"
+    line: '.................Print networkroutes information : /etc/sysconfig/network/routes......'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### Ip Addr information
+
+- name: Print ip addr info
+  shell: ip addr show
+  register: ipaddr_out
+
+- name: Set ip addr variable to check if command value exists
+  set_fact:
+    ipaddr_info: "{{ ipaddr_out.stdout }}"
+  when: "ipaddr_out.rc == 0"
+
+- name: Set ip addr variable to check if command does not exist
+  set_fact:
+    ipaddr_info: "NA"
+  when: "not ipaddr_out.rc == 0"
+
+- name: Create a file with ipaddr information
+  copy:
+    content: "{{ ipaddr_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ipaddr_info.txt"
+  delegate_to: localhost
+
+- name: Adding ip addr information to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ipaddr_info.txt"
+    line: '.................Print ip addr information : ip addr show...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### Iproute information
+
+- name: Print ip route information
+  shell: ip route show
+  register: iproute_out
+
+- name: Set iproute variable to check if command value exists
+  set_fact:
+    iproute_info: "{{ iproute_out.stdout }}"
+  when: "iproute_out.rc == 0"
+
+- name: Set iproute variable to check if command value does not exist
+  set_fact:
+    iproute_info: "NA"
+  when: "not iproute_out.rc == 0"
+
+- name: Create a file with iproute information
+  copy:
+    content: "{{ iproute_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/iproute_info.txt"
+  delegate_to: localhost
+
+- name: Adding ip route information
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/iproute_info.txt"
+    line: '.................Print ip addr information : ip route show...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### ip v6 route info
+
+- name: Print route info
+  shell: ip -6 route show
+  register: routeip6_out
+
+- name: Set route info variable to check if command value exists
+  set_fact:
+    iproute6_info: "{{ routeip6_out.stdout }}"
+  when: "routeip6_out.rc == 0"
+
+- name: Set route  info variable to check if command does not exist
+  set_fact:
+    iproute6_info: "NA"
+  when: "not routeip6_out.rc == 0"
+
+- name: Create a file with route information
+  copy:
+    content: "{{ routeip6_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/routeip6_info.txt"
+  delegate_to: localhost
+
+- name: Adding route inforamtion
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/routeip6_info.txt"
+    line: '.................Print route information : ip -6 route show...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### cat /etc/sysconfig/network/ifcfg-eth0
+- name: Print ifcfg-eth0 information
+  shell: cat /etc/sysconfig/network/ifcfg-eth0
+  register: ifcfgeth0_out
+
+- name: Set ifcfg-eth0 variable to check if command value exists
+  set_fact:
+    ifcfgeth0_info: "{{ ifcfgeth0_out.stdout }}"
+  when: "ifcfgeth0_out.rc == 0"
+
+- name: Set ifcfg-eth0 variable to check if command value does not exist
+  set_fact:
+    ifcfgeth0_info: "NA"
+  when: "not ifcfgeth0_out.rc == 0"
+
+- name: Create a file with ifcfgeth0 information
+  copy:
+    content: "{{ ifcfgeth0_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifcfgeth0_info.txt"
+  delegate_to: localhost
+
+- name: Adding ifcfg-eth0 information
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifcfgeth0_info.txt"
+    line: '.................Print ifcfg-eth0 information : /etc/sysconfig/network/ifcfg-eth0........'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### cat /etc/sysconfig/network/ifcfg-eth1
+- name: Get ifcfg-eth1
+  stat:
+    path: /etc/sysconfig/network/ifcfg-eth1
+  register: ifcfg_stat
+
+- name: Print ifcfg-eth1 information
+  shell: cat /etc/sysconfig/network/ifcfg-eth1
+  register: ifcfgeth1_out
+  when: ifcfg_stat.exists
+
+- name: Set ifcfg-eth1 variable to check if command value exists
+  set_fact:
+    ifcfgeth1_info: "{{ ifcfgeth1_out.stdout }}"
+  when: ifcfg_stat.stat.exists
+
+- name: Set ifcfg-eth1 variable to check if command value does not exist
+  set_fact:
+    ifcfgeth1_info: "NA"
+  when: ifcfg_stat.stat.exists
+
+- name: Create a file with ifcfgeth1 information
+  copy:
+    content: "{{ ifcfgeth1_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifcfgeth1_info.txt"
+  when: ifcfg_stat.stat.exists
+  delegate_to: localhost
+
+- name: Adding ifcfg-eth1 inforamation
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/ifcfgeth1_info.txt"
+    line: '.................Print ifcfg-eth1 information :/etc/sysconfig/network/ifcfg-eth1 ......'
+    insertbefore: BOF
+  when: ifcfg_stat.stat.exists
+  delegate_to: localhost

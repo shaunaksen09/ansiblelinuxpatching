@@ -1,0 +1,21 @@
+---
+- name: Executing Roles for Rhel and Suse
+  hosts: all
+
+  tasks:
+    - include_role:
+        name: "{{ item }}"
+      with_items:
+         - fetchpatchListRhelServer
+      when: inventory_hostname in groups['redhatmachine7']
+      tags:
+        - rhel
+
+
+    - include_role:
+        name: "{{ item }}"
+      with_items:
+         - differncePrePostRoleSuse
+      when: inventory_hostname in groups['susemachine12']
+      tags:
+        - suse

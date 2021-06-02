@@ -1,0 +1,8 @@
+---
+- name: Single source of information for all files
+  assemble:
+    src: "{{ filedirDiff }}/{{ ansible_hostname }}"
+    dest: "{{ filedirDiff }}/{{ ansible_hostname }}.DiffInfoPrePost.txt"
+    delimiter: '--------------------------------------------------------------------------------'
+  delegate_to: localhost
+

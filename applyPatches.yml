@@ -1,0 +1,26 @@
+---
+- name: Applying Patches
+  hosts: all
+  gather_facts: no
+  serial: 50
+
+  tasks:
+    - include_role:
+        name: "{{ item }}"
+      with_items:
+        - common
+        - applyPatchRhel
+      when: inventory_hostname in groups['redhatmachine7']
+      tags:
+        - rhel
+
+    - include_role:
+        name: "{{ item }}"
+      with_items:
+        - common
+        - SuseCheckList
+        - applyPatchSuse
+        - interactiveSusePatching
+      when: inventory_hostname in groups['susemachine12']
+      tags:
+        - suse

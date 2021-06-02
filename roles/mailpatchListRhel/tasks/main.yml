@@ -1,0 +1,10 @@
+---
+# tasks file for mailpatchListRhel
+- name: Sending patchlist via Mail
+  mail:
+    host: 127.0.0.1
+    port: 25
+    to: "{{ mailRecipient }}"
+    subject: Rhel PatchList extracted from Rhel Host
+    body: Rhel PatchList
+    attach: /home/ansible/ansible-patching/OSPatching/RedHat/patchListRhel.csv

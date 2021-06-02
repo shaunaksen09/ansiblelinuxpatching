@@ -1,0 +1,56 @@
+### cat /etc/resolv.conf
+
+- name: resolve configuration
+  shell: cat /etc/resolv.conf
+  register: resolv_out
+
+- name: setting the variable for resolv file config if output exists
+  set_fact:
+    resolve_info: "{{ resolv_out.stdout }}"
+  when: "resolv_out.rc == 0"
+
+- name: setting the variable for resolv file config if output does not exist
+  set_fact:
+    resolv_info: "NA"
+  when: "not resolv_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ resolv_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/resolv_info.txt"
+  delegate_to: localhost
+
+- name: Adding  /etc/resolve.conf to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/resolv_info.txt"
+    line: '.................Resolve configuration  Information: /etc/resolv.conf ...........................'
+    insertbefore: BOF
+  delegate_to: localhost
+
+### cat /etc/hosts
+- name: hosts file
+  shell: cat /etc/hosts | tail -1
+  register: hostsfile_out
+
+- name: setting the variable for hosts file config if output exists
+  set_fact:
+    hosts_info: "{{ hostsfile_out.stdout }}"
+  when: "hostsfile_out.rc == 0"
+
+- name: setting the variable for resolv file config if output does not exist
+  set_fact:
+    hosts_info: "NA"
+  when: "not hostsfile_out.rc == 0"
+
+- name: create a file with the contents
+  copy:
+    content: "{{ hostsfile_out.stdout }}"
+    dest: "{{ filedirPrePatch }}/{{ ansible_hostname }}/hostsfile_info.txt"
+  delegate_to: localhost
+
+- name: Adding /etc/hosts | tail -1 to the file
+  lineinfile:
+    path: "{{ filedirPrePatch }}/{{ ansible_hostname }}/hostsfile_info.txt"
+    line: '.................hosts file  Information: /etc/hosts | tail -1 ...........................'
+    insertbefore: BOF
+  delegate_to: localhost

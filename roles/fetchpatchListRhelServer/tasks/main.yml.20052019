@@ -1,0 +1,25 @@
+---
+# tasks file for rhelServer ManagedHost
+#
+- name: Download Patches on ManagedHost
+  shell:
+    cmd: yumdownloader http* --destdir /home/ansible/patchlist
+
+- name: Save the patchlist in a file
+  shell:
+    cmd: ls -l /home/ansible/patchlist
+  register: patchList
+
+- name: check the file exists
+  debug:
+    var: patchList
+
+- name: Save the PatchList in Control Node
+  local_action:
+    module: lineinfile
+    path: /home/ansible/ansible-patching/roles/pushpatchListRhelS3/files/{{ ansible_hostname }}.patchList_{{ ansible_date_time.date }}.txt
+    line: "{{ patchList.stdout_lines }}"
+    owner: ansible
+    group: ansible
+    mode: 0644
+    create: yes

@@ -19,3 +19,5 @@
       when: inventory_hostname in groups['susemachine12']
       tags:
         - suse
+
+# First commit 
